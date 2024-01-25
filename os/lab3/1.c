@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+void main()
+{
+	int id = fork();
+	if (id < 0)
+	{
+		printf("Cannot create the file");
+		exit(-1);
+	}
+	else if (id == 0)
+	{
+		printf("this is child process");
+	}
+	else
+	{
+		printf("parent process");
+	}
+}
