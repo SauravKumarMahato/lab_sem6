@@ -1,0 +1,14 @@
+% Predicate to filter 1s and 2s from a list
+filter_1s_and_2s([], []).
+
+filter_1s_and_2s([1|T], [1|Result]) :-
+    filter_1s_and_2s(T, Result).
+
+filter_1s_and_2s([2|T], [2|Result]) :-
+    filter_1s_and_2s(T, Result).
+
+filter_1s_and_2s([_|T], Result) :-
+    filter_1s_and_2s(T, Result).
+
+% Example usage:
+% filter_1s_and_2s([1,2,4,5,2,4,5,1,1], Result).
