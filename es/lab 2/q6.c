@@ -1,64 +1,37 @@
 #include <reg51.h>
-
-unsigned long int N _at_ 0x40;
-
-unsigned char led_pattern[11] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x80};
-
-void delay(int _del)
- {
- 	unsigned int i,j;
- 	for (i=0;i<_del;i++)
- 		for (j=0;j<800;j++);
- }
- 
+unsigned char scroll_pattern[] = { 
+0x3F, 0x3F, 0x07, 0xCF, 0x3F, 0x3F, 
+0x07, 0xe6, 0x3F, 0x3F, 0x07, 0xed, 
+0x3F, 0x3F, 0x07, 0xfd, 0x3F, 0x3F, 
+0x07};
+void delay(int time)
+{
+    unsigned int i,j;
+    for (i=0; i<time; i++)
+        for (j=0; j<500; j++);
+}
 void display(unsigned int i)
 {
-	unsigned int  led1, led2, led3, led4, led5;
-	int j;
-	unsigned int pattern[10] = {0x00,0x00,0x00,0x00,0x00 ,0xF1, 0xF2, 0xF4, 0xF8, 0x00} ;
-	
-	led1 = i / 1000;
-	led2 = ( i / 100) % 10;
-	led3 = (( i / 10) % 100)% 10;
-	led4 = (( i  % 1000)% 100)%10;
-	led5 = 10;
+unsigned int j;
 
-	for ( j = 9 ; j > 5; j--){
-		
-		P2 = pattern[j-4];
-		P0 = led_pattern[led1];
-		delay(35);
-		
-		P2 = pattern[j-3];
-		P0 = led_pattern[led2];
-		delay(35);
-		
-		P2 = pattern[j-2];
-		P0 = led_pattern[led3];
-		delay(35);
-		
-		P2 = pattern[j-1];
-		P0 = led_pattern[led4];
-		delay(35);
-		
-		P2 = pattern[j];
-		P0 = led_pattern[led5];
-		delay(35);
-		
-	}
+        P2 = 0x1;
+        P0 = scroll_pattern[i-4];
+        delay(80);
+        P2 = 0x2;
+        P0 = scroll_pattern[i-3];
+        delay(80);
+        P2 = 0x4;
+        P0 = scroll_pattern[i-2];
+        delay(80);
+        P2 = 0x8;
+        P0 = scroll_pattern[i-1];
+        delay(80);
+
 }
-
 void main(void)
 {
-  unsigned int i ;
-	unsigned int temp = 0 ;
-	while(1)
-	{
-		N = 1235;
-		temp = N;
-		for(i=0; i<5  ; i++){
-			display(temp);
-			temp = temp + 1 ;
-		}
-	}
+unsigned int i;
+while(1)
+    for(i=4; i<20; i++)
+        display(i);
 }
